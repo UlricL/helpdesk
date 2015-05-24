@@ -32,7 +32,6 @@ class Faqs extends \_DefaultController {
 			$list = Gui::select($categories, $cat, "Sélectionnez une catégorie ...");
 			$this->loadView("faq/vAdd", array("article" => $article, "listCat" => $list));
 			echo JsUtils::execute("CKEDITOR.replace( 'contenu');");
-			/// echo date('d m Y H:i');
 		}else{
 			$this->nonValid();
 		}

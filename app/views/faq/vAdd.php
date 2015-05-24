@@ -9,14 +9,21 @@
 	<input type="hidden" name="id" value="<?php echo $article->getId()?>">
 	<input type="text" name="titre" value="<?php echo $article->getTitre()?>" placeholder="Entrez un article" class="form-control">
 	<textarea name="contenu" class="form-control"> <?php echo $article->getContenu() ?> </textarea>
-	<input type="text" disabled value="<?php echo Auth::getUser()?>">
-
-
+	<input type="text" disabled value="<?php echo Auth::getUser()//affiche l'utilisateur connecté actuellement en dessous du cKEditor ?>">
+	<?php
+	//affiche l'heure de création de l'article de la FAQ (requête SQL à la BDD)
+	$bdd=mysqli_connect("localhost","root","","helpdesk"); // connection au serv' SQL
+	$result = mysqli_query($bdd, "SELECT `dateCreation` FROM `faq`"); // la requête pour obtenir l'heure
+	$row = mysqli_fetch_row($result);
+	$date = date_create($row[0]);
+	echo "<br />Date de création :<br />";
+	echo date_format($date, 'Y-m-d H:i:s'); // format de la date
+	?>
 </div>
+
 <div class="form-group">
 	<input type="submit" value="Valider" class="btn btn-default">
 	<a class="btn btn-default" href="<?php echo $config["siteUrl"]?>users">Annuler</a>
-	<?php /// echo date('d m Y H:i'); ?>
 </div>
 </fieldset>
 </form>
