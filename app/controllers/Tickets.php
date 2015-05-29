@@ -37,52 +37,25 @@ class Tickets extends \_DefaultController {
 		return ["incident" => "Incident", "demande" => "Demande"];
 	}
 
-	/*public function frm($id=null){
-		if(Auth::isAdmin()){
-			$article = $this->getInstance($id);
-			$categories = DAO::getAll("Categorie");
-			$cat = -1;
-			if ($article->getCategorie() != null) {
-				$cat = $article->getCategorie()->getId();
-			}
-			$list = Gui::select($categories, $cat, "Sélectionnez une catégorie ...");
-
-			//$statuts = DAO::getAll("Statut");
-			$ticket = DAO::getOne("Ticket", $id[0]);
-
-			$this->loadView("ticket/vAdd", array(
-				//"ticketTypes" => Tickets::getTypes(),
-				//"categories" => $categories,
-				"ticket" => $ticket,
-				//"statut" => $statuts,
-				"listCat" => $list,
-				//"article" => $article
-			));
-
-			echo JsUtils::execute("CKEDITOR.replace('description');");
-		}else{
-			$this->nonValid();
-		}
-	}
-*/
-
 	public function frm($id=null){
 		if(Auth::isAuth()){
 			$ticket=$this->getInstance($id);
 			$categories=DAO::getAll("Categorie");
-			$statuts = DAO::getAll("Statut");
+			$statut = DAO::getAll("Statut");
 			$cat=-1;
 			if($ticket->getCategorie()!=null){
 				$cat=$ticket->GetCategorie()->getId();
 			}
 			$list=Gui::select($categories, $cat,"Sélectionnez une catégorie...");
-			$this->loadView("ticket/vAdd",array("ticketTypes" => Tickets::getTypes(),"categories" => $categories,"ticket" => $ticket,"statuts" => $statuts, "listCat" => $list));
+
+			$this->loadView("ticket/vAdd",array("ticketTypes" => Tickets::getTypes(),"categories" => $categories, "ticket" => $ticket, "Statut" => $statut, "listCat" => $list,));
+
 			echo JsUtils::execute("CKEDITOR.replace('description');");
 		}else{
 			$this->nonValid();
 		}
 	}
-	
+
 	public function onInvalidControl () {
 		$this->loadView("main/vHeader", array("infoUser"=>Auth::getInfoUser()));
 		$this->nonValid();

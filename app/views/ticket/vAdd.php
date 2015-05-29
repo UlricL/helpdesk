@@ -1,6 +1,6 @@
 <form method="post" action="tickets/update">
 	<fieldset>
-		<legend>Créer un ticket</legend>
+		<legend>Créer/modifier un ticket</legend>
 		<div class="form-group">
 
 			<select name="idCategorie" class="form-control">
@@ -8,7 +8,7 @@
 			</select>
 
 			<select name="idType" class="form-control">
-				<?php echo $type;?>
+				<?php echo $ticket->getType();?>
 			</select>
 
 			<input type="hidden" name="id" value="<?php echo $ticket->getId()?>">
@@ -21,8 +21,8 @@
 			<?php echo "<br />Date de création : <br />";?>
 			<input type="text" disabled value="<?php echo $ticket->getDateCreation()?>"> <?php //affiche l'heure de création du ticket ?>
 
-			<?php echo "<br />Status : <br />";?>
-			<input type="text" disabled value="<?php echo $ticket->getStatut()?>"> <?php //affiche la version du ticket ?>
+			<?php echo "<br />Statut : <br />";?>
+			<input type="text" disabled value="<?php echo $ticket->getStatut()?>"> <?php //affiche le statut du ticket ?>
 
 		</div>
 

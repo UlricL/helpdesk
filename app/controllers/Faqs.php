@@ -16,11 +16,12 @@ class Faqs extends \_DefaultController {
 	 * @see _DefaultController::setValuesToObject()
 	 */
 
-	protected function setValuesToObject($object) { // modif set values to object
+	protected function setValuesToObject(&$object) { // modif set values to object
 		parent::setValuesToObject($object);
 		$object->setUser(Auth::getUser());
 		$categorie=DAO::getOne("Categorie", $_POST["idCategorie"]);
 		$object->setCategorie($categorie);
+		$object->incVersion();
 	}
 
 	public function frm($id=null){
