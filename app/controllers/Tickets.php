@@ -37,7 +37,7 @@ class Tickets extends \_DefaultController {
 		return ["incident" => "Incident", "demande" => "Demande"];
 	}
 
-	public function frm($id=null){
+	/*public function frm($id=null){
 		if(Auth::isAdmin()){
 			$article = $this->getInstance($id);
 			$categories = DAO::getAll("Categorie");
@@ -59,42 +59,30 @@ class Tickets extends \_DefaultController {
 				//"article" => $article
 			));
 
-
-
-
-
 			echo JsUtils::execute("CKEDITOR.replace('description');");
 		}else{
 			$this->nonValid();
 		}
 	}
+*/
 
-	public function add($id=NULL) {
-		if(Auth::isAuth()) {
-			if(!empty($_POST['type']) && !empty($_POST['categorie']) && !empty($_POST['titre']) && !empty($_POST['description'])) {
-				$ticket = new Ticket();
-				$ticket->setUser(Auth::getUser());
-				$ticket->setStatut(DAO::getOne("Statut",1));
-				if(in_array($_POST['type'], Tickets::getTypes())) {
-					$ticket->setType($_POST['type']);
-				}
-				$ticket->setCategorie(DAO::getOne("Categorie",$_POST['categorie']));
-				$ticket->setTitre($_POST['titre']);
-				$ticket->setDescription($_POST['description']);
-				DAO::insert($ticket);
-				$this->messageSuccess("Le nouveau ticket a bien été crée !");
+	public function frm($id=null){
+		if(Auth::isAuth()){
+			$ticket=$this->getInstance($id);
+			$categories=DAO::getAll("Categorie");
+			$statuts = DAO::getAll("Statut");
+			$cat=-1;
+			if($ticket->getCategorie()!=null){
+				$cat=$ticket->GetCategorie()->getId();
 			}
-			else
-				$this->messageWarning("Vous devez remplir tous les champs pour créer un ticket !");
+			$list=Gui::select($categories, $cat,"Sélectionnez une catégorie...");
+			$this->loadView("ticket/vAdd",array("ticketTypes" => Tickets::getTypes(),"categories" => $categories,"ticket" => $ticket,"statuts" => $statuts, "listCat" => $list));
+			echo JsUtils::execute("CKEDITOR.replace('description');");
+		}else{
+			$this->nonValid();
 		}
-		else
-			$this->messageDanger("Vous devez être connecté pour accéder à cette page.");
 	}
-
-	public function isValid() {
-		return Auth::isAuth();
-	}
-
+	
 	public function onInvalidControl () {
 		$this->loadView("main/vHeader", array("infoUser"=>Auth::getInfoUser()));
 		$this->nonValid();
