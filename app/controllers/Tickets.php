@@ -40,8 +40,6 @@ class Tickets extends \_DefaultController {
 	public function frm($id=null){
 		if(Auth::isAdmin()){
 			$article = $this->getInstance($id);
-			$status = DAO::getAll("Statut");
-			$ticket = DAO::getOne("Ticket", $id[0]);
 			$categories = DAO::getAll("Categorie");
 			$cat = -1;
 			if ($article->getCategorie() != null) {
@@ -49,13 +47,48 @@ class Tickets extends \_DefaultController {
 			}
 			$list = Gui::select($categories, $cat, "Sélectionnez une catégorie ...");
 
-			$this->loadView("ticket/vAdd",
-				array("TypeTicket" => Tickets::getTypes(), "listCat" => $list, "ticket" => $ticket, "status" => $status));
-			echo JsUtils::execute("CKEDITOR.replace( 'contenu');");
+			//$statuts = DAO::getAll("Statut");
+			$ticket = DAO::getOne("Ticket", $id[0]);
 
+			$this->loadView("ticket/vAdd", array(
+				//"ticketTypes" => Tickets::getTypes(),
+				//"categories" => $categories,
+				"ticket" => $ticket,
+				//"statut" => $statuts,
+				"listCat" => $list,
+				//"article" => $article
+			));
+
+
+
+
+
+			echo JsUtils::execute("CKEDITOR.replace('description');");
 		}else{
 			$this->nonValid();
 		}
+	}
+
+	public function add($id=NULL) {
+		if(Auth::isAuth()) {
+			if(!empty($_POST['type']) && !empty($_POST['categorie']) && !empty($_POST['titre']) && !empty($_POST['description'])) {
+				$ticket = new Ticket();
+				$ticket->setUser(Auth::getUser());
+				$ticket->setStatut(DAO::getOne("Statut",1));
+				if(in_array($_POST['type'], Tickets::getTypes())) {
+					$ticket->setType($_POST['type']);
+				}
+				$ticket->setCategorie(DAO::getOne("Categorie",$_POST['categorie']));
+				$ticket->setTitre($_POST['titre']);
+				$ticket->setDescription($_POST['description']);
+				DAO::insert($ticket);
+				$this->messageSuccess("Le nouveau ticket a bien été crée !");
+			}
+			else
+				$this->messageWarning("Vous devez remplir tous les champs pour créer un ticket !");
+		}
+		else
+			$this->messageDanger("Vous devez être connecté pour accéder à cette page.");
 	}
 
 	public function isValid() {
