@@ -15,12 +15,14 @@ class Faqs extends \_DefaultController {
 	/* (non-PHPdoc)
 	 * @see _DefaultController::setValuesToObject()
 	 */
-	protected function setValuesToObject(&$object) { // modif set values to object
+
+	protected function setValuesToObject($object) { // modif set values to object
 		parent::setValuesToObject($object);
 		$object->setUser(Auth::getUser());
 		$categorie=DAO::getOne("Categorie", $_POST["idCategorie"]);
 		$object->setCategorie($categorie);
 	}
+
 	public function frm($id=null){
 		if(Auth::isAdmin()){
 			$article = $this->getInstance($id);
@@ -36,15 +38,18 @@ class Faqs extends \_DefaultController {
 			$this->nonValid();
 		}
 	}
+
 	public function isValid() {
 		return Auth::isAuth();
 	}
+
 	public function onInvalidControl () {
 		$this->loadView("main/vHeader", array("infoUser"=>Auth::getInfoUser()));
 		$this->nonValid();
 		$this->loadView("main/vFooter");
 		exit;
 	}
+
 	private function nonValid(){
 		echo "<div class='container'>";
 		$this->messageDanger("Accès interdit. Vous devez vous connecter".Auth::getInfoUser());
