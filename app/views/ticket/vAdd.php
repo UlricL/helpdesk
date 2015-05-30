@@ -8,10 +8,7 @@
 			</select>
 
 			<select name="idType" class="form-control">
-				<option disabled selected>Type</option>
-				<?php foreach($ticketTypes as $type => $libelle) {  ?>
-					<option value="<?php echo $type; ?>"><?php echo $libelle; ?></option>
-				<?php } ?>
+				<?php echo $ticket->getType();?>
 			</select>
 
 			<input type="hidden" name="id" value="<?php echo $ticket->getId()?>">
