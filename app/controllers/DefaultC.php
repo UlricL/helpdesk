@@ -67,4 +67,5 @@ class DefaultC extends \BaseController {
 		echo "</div>";
 		$this->loadView("main/vFooter");
 	}
+
 }

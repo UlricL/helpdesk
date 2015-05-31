@@ -5,10 +5,19 @@
  * @version 1.1
  * @package helpdesk.controllers
  */
-class Messages extends \_DefaultController {
-	public function Messages(){
+class Messages extends \_DefaultController
+{
+	public function Messages()
+	{
 		parent::__construct();
-		$this->title="Messages";
-		$this->model="Message";
+		$this->title = "Messages";
+		$this->model = "Message";
 	}
-}
+
+
+
+	public function tet()
+	{
+		$this->loadView("main/vTest");
+	}
+	}

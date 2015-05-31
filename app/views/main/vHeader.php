@@ -28,11 +28,14 @@
 			<div class="collapse navbar-collapse" id="collapse-mainNav">
 				<ul class="nav navbar-nav navbar-nav">
 					<li id='mainNav-navzone-1-li-1'><a id='mainNav-navzone-1-link-1'
-						href="tickets/frm">Créer un ticket</a></li>
+						href="Tickets/frm">Créer un ticket</a></li>
 					<li id='mainNav-navzone-1-li-2'><a id='mainNav-navzone-1-link-2'
-						href="tickets">Tickets</a></li>
+						href="Tickets">Tickets</a></li>
 					<li id='mainNav-navzone-1-li-3'><a id='mainNav-navzone-1-link-3'
-						href="faqs">Foire aux questions</a></li>
+						href="Faqs">Foire aux questions</a></li>
+					<li id='mainNav-navzone-1-li-4'><a id='mainNav-navzone-1-link-4'
+						href="DefaultC/test">Page de test</a></li>
+
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
