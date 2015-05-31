@@ -11,7 +11,7 @@
             <legend>Module base de connaissances</legend>
             <a class="btn btn-primary" href="faqs/frm">Créer un article</a>
             <a class="btn btn-primary" href="#">Consulter la base</a>
-            <a class="btn btn-primary" href="#">Afficher un article</a>
+            <a class="btn btn-primary" href="Faqs">Afficher un article</a>
         </fieldset>
         <fieldset>
             <legend>Module Commun</legend>

@@ -5,24 +5,27 @@
  * @version 1.1
  * @package helpdesk.controllers
  */
-class Tickets extends \_DefaultController {
-	public function Tickets(){
+class Tickets extends \_DefaultController
+{
+	public function Tickets()
+	{
 		parent::__construct();
-		$this->title="Tickets";
-		$this->model="Ticket";
+		$this->title = "Tickets";
+		$this->model = "Ticket";
 	}
 
-	public function messages($id){
-		$ticket=DAO::getOne("Ticket", $id[0]);
-		if($ticket!=NULL){
-			echo "<h2>".$ticket."</h2>";
-			$messages=DAO::getOneToMany($ticket, "messages");
+	public function messages($id)
+	{
+		$ticket = DAO::getOne("Ticket", $id[0]);
+		if ($ticket != NULL) {
+			echo "<h2>" . $ticket . "</h2>";
+			$messages = DAO::getOneToMany($ticket, "messages");
 			echo "<table class='table table-striped'>";
 			echo "<thead><tr><th>Messages</th></tr></thead>";
 			echo "<tbody>";
-			foreach ($messages as $msg){
+			foreach ($messages as $msg) {
 				echo "<tr>";
-				echo "<td title='message' data-content='".htmlentities($msg->getContenu())."' data-container='body' data-toggle='popover' data-placement='bottom'>".$msg->toString()."</td>";
+				echo "<td title='message' data-content='" . htmlentities($msg->getContenu()) . "' data-container='body' data-toggle='popover' data-placement='bottom'>" . $msg->toString() . "</td>";
 				echo "</tr>";
 			}
 			echo "</tbody>";
@@ -33,40 +36,53 @@ class Tickets extends \_DefaultController {
 		}
 	}
 
-	private static function getTypes(){
-		return ["incident" => "Incident", "demande" => "Demande"];
-	}
+	//private static function getTypes(){
+	//return ["incident" => "Incident", "demande" => "Demande"];
+	// }
 
-	public function frm($id=null){
-		if(Auth::isAuth()){
-			$ticket=$this->getInstance($id);
-			$categories=DAO::getAll("Categorie");
-			$statut = DAO::getAll("Statut");
-			$cat=-1;
-			if($ticket->getCategorie()!=null){
-				$cat=$ticket->GetCategorie()->getId();
+	public function frm($id = null)
+	{
+		if (Auth::isAuth()) {
+			$ticket = $this->getInstance($id);
+			$categories = DAO::getAll("Categorie");
+			if ($ticket->getCategorie() == null) {
+				$cat = -1;
+			} else {
+				$cat = $ticket->getCategorie()->getId();
 			}
-			$list=Gui::select($categories, $cat,"Sélectionnez une catégorie...");
+			$listCat = Gui::select($categories, $cat, "Sélectionnez une catégorie...");
+			$listType = Gui::select(array("demande", "intervention"), $ticket->getType(), "Sélectionner un type ...");
 
-			$this->loadView("ticket/vAdd",array("ticketTypes" => Tickets::getTypes(),"categories" => $categories, "ticket" => $ticket, "Statut" => $statut, "listCat" => $list,));
+			$this->loadView("ticket/vAdd", array("ticket" => $ticket, "listCat" => $listCat, "listType" => $listType));
 
 			echo JsUtils::execute("CKEDITOR.replace('description');");
-		}else{
+		} else {
 			$this->nonValid();
 		}
 	}
 
-	public function onInvalidControl () {
-		$this->loadView("main/vHeader", array("infoUser"=>Auth::getInfoUser()));
+	public function onInvalidControl()
+	{
+		$this->loadView("main/vHeader", array("infoUser" => Auth::getInfoUser()));
 		$this->nonValid();
 		$this->loadView("main/vFooter");
 		exit;
 	}
 
-	private function nonValid(){
+	private function nonValid()
+	{
 		echo "<div class='container'>";
-		$this->messageDanger("Accès interdit. Vous devez vous connecter".Auth::getInfoUser());
+		$this->messageDanger("Accès interdit. Vous devez vous connecter" . Auth::getInfoUser());
 		echo "</div>";
 	}
-}
 
+
+	protected function setValuesToObject(&$object) {
+		parent::setValuesToObject($object);
+		if(isset($_POST["idCategorie"])){
+			$cat=DAO::getOne("Categorie", $_POST["idCategorie"]);
+			$object->setCategorie($cat);
+		}
+		$object->setUser(Auth::getUser());
+	}
+}
