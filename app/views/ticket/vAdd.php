@@ -17,14 +17,26 @@
 			<textarea name="description" class="form-control"> <?php echo $ticket->getDescription() ?> </textarea>
 
 			<?php echo "Utilisateur : <br />";?>
-			<input class="form-control" type="text" readonly value="<?php echo Auth::getUser()?>" style="width:25%;"> <!-- affiche l'utilisateur connecté actuellement en dessous du cKEditor -->
+			<input class="form-control" type="text" readonly value="<?php echo Auth::getUser() ?>" style="width:25%;"> <!-- affiche l'utilisateur connecté actuellement en dessous du cKEditor -->
 
 			<?php echo "Date de création : <br />";?>
-			<input class="form-control" type="text" readonly value="<?php echo $ticket->getDateCreation()?>" style="width:25%;"> <!-- //affiche l'heure de création du ticket -->
+			<input class="form-control" type="text" readonly value="<?php echo $ticket->getDateCreation() ?>" style="width:25%;"> <!-- //affiche l'heure de création du ticket -->
 
 			<?php echo "Statut : <br />";?>
-			<input class="form-control" type="text" readonly value="Nouveau" style="width:25%;"> <!-- affiche le statut du ticket -->
-
+			<?php
+			if(!empty($ticket->getStatut()) and Auth::isAdmin()) {
+				?>
+			<select class="form-control" name="statut" style="width:25%;">
+			<?php echo $listStatut; ?> <!-- charge la liste des statuts -->
+			</select>
+			<?php
+			}
+			else { // si statut vide (au moment de la création) on impose le statut nouveau en readonly -->
+				?>
+				<input class="form-control" type="text" name="statut" readonly value="Nouveau" style="width:25%;" />
+			<?php
+			}
+			?>
 		</div>
 
 		<div class="form-group">

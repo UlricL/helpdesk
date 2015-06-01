@@ -51,13 +51,19 @@ class Auth {
 			$infoUser="<a class='btn btn-primary' href='defaultC/disconnect'>Déconnexion <span class='label label-success'>".$user."</span></a>";
 		}else{
 			$infoUser='<div class="btn-group">
+
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								Connexion en tant que... <span class="caret"></span>
+								Connexion en tant que ... <span class="caret"></span>
 							</button>
+
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="defaultC/asAdmin"><span class="glyphicon glyphicon-king" aria-hidden="true"></span>&nbsp;Administrateur</a></li>
-								<li><a href="defaultC/asUser"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Utilisateur</a></li>
-							</ul>
+								<li><a href="defaultC/asAdmin"><span class="glyphicon glyphicon-king" aria-hidden="true"></span>&nbsp;Administrateur</a></li>';
+
+			foreach(DAO::getAll("User", "admin=0") as $user) {
+				$infoUser .= '<li><a href="defaultC/asUser/' . $user->getId(). '"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;' . $user->getLogin() .'</a></li>'; // &nbsp permet de faire un espace insécable
+			}
+			$infoUser .= '</ul>
+
 						</div>';
 		}
 		return $infoUser;

@@ -36,10 +36,6 @@ class Tickets extends \_DefaultController
 		}
 	}
 
-	//private static function getTypes(){
-	//return ["incident" => "Incident", "demande" => "Demande"];
-	// }
-
 	public function frm($id = null)
 	{
 		if (Auth::isAuth()) {
@@ -51,9 +47,10 @@ class Tickets extends \_DefaultController
 				$cat = $ticket->getCategorie()->getId();
 			}
 			$listCat = Gui::select($categories, $cat, "Sélectionnez une catégorie...");
-			$listType = Gui::select(array("demande", "intervention"), $ticket->getType(), "Sélectionner un type ...");
+			$listType = Gui::select(array("demande", "incident"), $ticket->getType(), "Sélectionner un type ...");
+			$listStatut = Gui::select(DAO::getAll("Statut"), $ticket->getStatut(), "Sélectionnez le statut");
 
-			$this->loadView("ticket/vAdd", array("ticket" => $ticket, "listCat" => $listCat, "listType" => $listType));
+			$this->loadView("ticket/vAdd", array("ticket" => $ticket, "listCat" => $listCat, "listType" => $listType, "listStatut" => $listStatut));
 
 			echo JsUtils::execute("CKEDITOR.replace('description');");
 		} else {
@@ -77,12 +74,15 @@ class Tickets extends \_DefaultController
 	}
 
 
-	protected function setValuesToObject(&$object) {
+	protected function setValuesToObject(&$object)
+	{
 		parent::setValuesToObject($object);
-		if(isset($_POST["idCategorie"])){
-			$cat=DAO::getOne("Categorie", $_POST["idCategorie"]);
-			$object->setCategorie($cat);
-		}
 		$object->setUser(Auth::getUser());
+		$object->setUser(Auth::getUser());
+		$categorie = DAO::getOne("Categorie", $_POST["idCategorie"]);
+		$object->setCategorie($categorie);
+		if(empty($object->getStatut())) {
+			$object->setStatut(DAO::getOne("Statut",1));
+		}
 	}
 }

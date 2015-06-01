@@ -14,10 +14,15 @@ class Messages extends \_DefaultController
 		$this->model = "Message";
 	}
 
-
-
 	public function tet()
 	{
 		$this->loadView("main/vTest");
 	}
-	}
+
+
+
+
+
+
+
+}

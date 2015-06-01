@@ -3,9 +3,9 @@
     <div class="well well-lg">
         <fieldset>
             <legend>Module Report d'incidents</legend>
-            <a class="btn btn-primary" href="Tickets/frm">Créer un ticket</a>
-            <a class="btn btn-primary" href="#">Echanger sur un ticket...</a>
-            <a class="btn btn-primary" href="#">Modifier le statut d'un ticket...</a>
+            <a class="btn btn-info" href="Tickets/frm">Créer un ticket</a>
+            <a class="btn btn-info" href="#">Echanger sur un ticket...</a>
+            <a class="btn btn-info" href="#">Modifier le statut d'un ticket...</a>
         </fieldset>
         <fieldset>
             <legend>Module base de connaissances</legend>
